@@ -4,7 +4,6 @@
 
 return  [
     'modules' => [
-        'auth',
-        'survey',
+        'Survey',
     ]
 ];
