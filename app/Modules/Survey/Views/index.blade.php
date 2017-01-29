@@ -40,11 +40,11 @@
                                 <div>{{ $survey->created_at->format('d M Y') }}</div>
                             </td>
                             @php
-                                $link = route('fill-form');
+                                $link = route('fill-form', [$survey->id]);
                                 $linkText = 'Fill';
                                 if($survey->status == 'Completed')
                                 {
-                                    $link = route('view-form');
+                                    $link = route('view-form', [$survey->id]);
                                     $linkText = 'View';
                                 }
                             @endphp

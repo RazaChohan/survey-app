@@ -24,9 +24,15 @@ Route::group(['prefix' => 'survey', 'namespace' => '\App\Modules\Survey\Controll
     /***
      * Fill survey form
      */
-    Route::get('/fill-form', ['as' => 'fill-form', 'uses' => 'SurveyController@fillForm']);
+    Route::get('/fill-form/{id}', ['as' => 'fill-form', 'uses' => 'SurveyController@fillForm']);
+
     /***
      * View filled survey form
      */
-    Route::get('/view-form', ['as' => 'view-form', 'uses' => 'SurveyController@viewForm']);
+    Route::get('/view-form/{id}', ['as' => 'view-form', 'uses' => 'SurveyController@viewForm']);
+
+    /***
+     * Save form
+    */
+    Route::post('save-form', ['as' => 'save-form', 'uses' => 'SurveyController@saveForm']);
 });

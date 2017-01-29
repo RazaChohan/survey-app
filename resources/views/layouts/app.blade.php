@@ -67,12 +67,27 @@
             </div>
         </div>
     </nav>
-
+    @if(session()->has('success'))
+    <div class="col-md-8 col-md-offset-2">
+        <div class="alert alert-success">
+            <strong>Success!</strong> {{ session()->pull('success') }}
+        </div>
+    </div>
+    @endif
     @yield('content')
 
     <!-- JavaScripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    @yield('scripts')
+    <script>
+        $(document).ready(function(e){
+            $(".alert-success").fadeTo(2000, 500).slideUp(500, function(){
+                $(this).slideUp(500);
+            });
+        });
+    </script>
+
 </body>
 </html>
