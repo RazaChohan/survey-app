@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SurveyUserTable extends Migration
+class SurveyUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class SurveyUserTable extends Migration
     public function up()
     {
         Schema::create('survey_users', function (Blueprint $table) {
-            $table->integer('survey_id');
+            $table->integer('survey_id')->unsigned();
             $table->foreign('survey_id')
                 ->references('id')
                 ->on('surveys');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
