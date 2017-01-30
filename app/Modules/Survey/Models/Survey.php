@@ -63,10 +63,15 @@ class Survey extends Model
         DB::table('survey_users')
                 ->where('user_id', '=', Auth::user()->id)
                 ->where('survey_id', '=', $surveyId)
-                ->update(['status' => ($surveySaveMethod == 'submit') ? 'Completed' : 'Partially Completed']);
+                ->update(['status' => ($surveySaveMethod == 'submit') ? 'Completed' : 'Partially Completed',
+                          'submitted_at' => \Carbon\Carbon::now()]);
     }
 
-    public function getFilledSurvey($surveyId) {
-
+    public function getSurveySubmittedTime($surveyId) {
+        $surveyNameAndSubmissionTime = $this->join('survey_users as su','su.survey_id', '=', 'surveys.id')
+                                            ->where('su.user_id','=',Auth::user()->id)
+                                            ->where('surveys.id','=',$surveyId)
+                                            ->first(['surveys.name as name','su.submitted_at']);
+        return $surveyNameAndSubmissionTime;
     }
 }

@@ -61,4 +61,19 @@ class SurveyAttribute extends Model
         DB::table('survey_submissions')->insert($bulkInsertSurveySubmissions);
 
     }
+
+    /***
+     * Get filled survey
+     *
+     * @param $surveyId
+     *
+     * @return survey submissions
+     */
+    public function getFilledSurvey($surveyId) {
+        $surveySubmissions = $this->join('survey_submissions as ss', 'ss.survey_attribute_id', '=', 'survey_attributes.id')
+                                       ->where('survey_attributes.survey_id','=',$surveyId)
+                                       ->where('ss.user_id','=',Auth::user()->id)
+                                       ->get(['survey_attributes.label as label', 'ss.value']);
+        return $surveySubmissions;
+    }
 }

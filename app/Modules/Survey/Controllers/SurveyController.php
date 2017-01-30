@@ -75,8 +75,11 @@ class SurveyController extends Controller
      * @return view view filled survey form
      */
     public function viewForm($id) {
-        $survey = $this->surveyModel->getFilledSurvey($id);
-        return view('Survey::view')->with(['survey' => $survey]);
+        $surveyAttributeModel = new SurveyAttribute();
+        $surveyNameAndSubmittedTime = $this->surveyModel->getSurveySubmittedTime($id);
+        $submittedSurvey = $surveyAttributeModel->getFilledSurvey($id);
+        return view('Survey::view')->with(['submittedSurvey' => $submittedSurvey,
+                                           'surveyNameAndSubmittedTime' => $surveyNameAndSubmittedTime]);
     }
 
     /***
@@ -94,7 +97,7 @@ class SurveyController extends Controller
             if(preg_match('/^[a-zA-z0-9]+\_\d+$/i', $key)) {
                 $extractedFieldInfo = explode('_', $key);
                 $extractedId = intval($extractedFieldInfo[(sizeof($extractedFieldInfo) - 1)]);
-                $surveyAttributeSubmissions[$extractedId] = is_array($value) ? implode(',', $value) : $value;
+                $surveyAttributeSubmissions[$extractedId] = is_array($value) ? implode(',', $value) : trim($value);
             }
         }
         $surveyAttributeModel->addOrUpdateAttributeSubmission($surveyAttributeSubmissions);

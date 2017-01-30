@@ -37,11 +37,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
+                @if(!Auth::guest())
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Dashboard
                 </a>
+                @endif
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
