@@ -67,11 +67,36 @@ class Survey extends Model
                           'submitted_at' => \Carbon\Carbon::now()]);
     }
 
+    /***
+     * Get Survey Submitted time and name
+     *
+     * @param $surveyId
+     * @return mixed
+     */
     public function getSurveySubmittedTime($surveyId) {
         $surveyNameAndSubmissionTime = $this->join('survey_users as su','su.survey_id', '=', 'surveys.id')
                                             ->where('su.user_id','=',Auth::user()->id)
                                             ->where('surveys.id','=',$surveyId)
                                             ->first(['surveys.name as name','su.submitted_at']);
         return $surveyNameAndSubmissionTime;
+    }
+
+    /***
+     * Assign Surveys To New User
+     * @param $userId
+     */
+    public function assignSurveysToNewUser($userId){
+        $surveyIds = $this->all(['id'])->pluck('id')->toArray();
+        $assignSurveys = [];
+        if(count($surveyIds) > 0) {
+            foreach($surveyIds as $surveyId) {
+                $assignSurveys[] = ['user_id' => $userId,
+                                    'survey_id' => $surveyId,
+                                    'status' => 'Pending'
+                                ];
+            }
+            DB::table('survey_users')->insert($assignSurveys);
+        }
+
     }
 }

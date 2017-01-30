@@ -7,7 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
+use App\Modules\Survey\Models\Survey;
 class AuthController extends Controller
 {
     /*
@@ -64,11 +64,15 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+        //Assign surveys to new user
+        $surveyModel = new Survey();
+        $surveyModel->assignSurveysToNewUser($user->id);
+        return $user;
     }
 }
